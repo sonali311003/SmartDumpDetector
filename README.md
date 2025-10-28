@@ -1,7 +1,7 @@
 # MiniProjectTT
 
-A short description of your project — what it does, and what it’s built for.  
-(Example: *MiniProjectTT is a [C++/Python/etc.] project developed as part of my AI & ML coursework. It implements [brief feature].*)
+MiniProjectTT is a Python project developed as part of my Artificial Intelligence and Machine Learning coursework.  
+It focuses on implementing data visualization and analysis techniques using libraries like Pandas and Matplotlib.
 
 ---
 
