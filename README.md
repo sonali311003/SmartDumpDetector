@@ -1,6 +1,6 @@
-# MiniProjectTT
+# SmartDumpDetector
 
-MiniProjectTT is a Python project developed as part of my Artificial Intelligence and Machine Learning coursework.  
+SmartDumpDetector is a Python project developed as part of my Artificial Intelligence and Machine Learning coursework.  
 It focuses on implementing data visualization and analysis techniques using libraries like Pandas and Matplotlib.
 
 ---
