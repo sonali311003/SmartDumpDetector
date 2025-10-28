@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Illegal Dumping Detection Dashboard</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Dashboard Header -->
+        <header>
+            <div class="dashboard-header">
+                <div class="header-content">
+                    <div class="logo-section">
+                        <i class="fas fa-shield-alt"></i>
+                        <h1 class="dashboard-title">Illegal Dumping Detection Dashboard</h1>
+                    </div>
+                    <div class="header-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-eye"></i>
+                            <span>Monitoring Active</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-clock"></i>
+                            <span id="timestamp">Last Updated: --:--:--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sensor Readings Section -->
+        <div class="sensor-grid">
+            <div class="sensor-card temperature">
+                <div class="card-header">
+                    <i class="fas fa-thermometer-half"></i>
+                    <h2>Temperature</h2>
+                </div>
+                <div class="card-content">
+                    <div class="sensor-value" id="temperature">-- °C</div>
+                    <div class="sensor-status" id="temp-status">Normal</div>
+                    <div class="trend-indicator">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Real-time monitoring</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sensor-card tds">
+                <div class="card-header">
+                    <i class="fas fa-tint"></i>
+                    <h2>TDS Level</h2>
+                </div>
+                <div class="card-content">
+                    <div class="sensor-value" id="tds">-- ppm</div>
+                    <div class="sensor-status" id="tds-status">Normal</div>
+                    <div class="trend-indicator">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Real-time monitoring</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sensor-card turbidity">
+                <div class="card-header">
+                    <i class="fas fa-water"></i>
+                    <h2>Turbidity</h2>
+                </div>
+                <div class="card-content">
+                    <div class="sensor-value" id="turbidity">-- NTU</div>
+                    <div class="sensor-status" id="turbidity-status">Normal</div>
+                    <div class="trend-indicator">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Real-time monitoring</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ML Detection Status -->
+        <div class="detection-panel">
+            <h2>Illegal Dumping Detection Status</h2>
+            <div class="detection-status">
+                <div class="status-indicator" id="detectionStatus">No Illegal Dumping Detected</div>
+                <div class="detection-details" id="detectionDetails"></div>
+            </div>
+        </div>
+
+        <!-- Geospatial Analysis -->
+        <div class="map-container">
+            <h2>Geospatial Analysis</h2>
+            <div id="map"></div>
+        </div>
+
+        <!-- Alert History -->
+        <section id="alerts" class="alerts-section">
+            <div class="container">
+                <h2 class="section-title">Alert History</h2>
+                <div class="alert-container">
+                    <div id="alertHistory" class="alert-list">
+                        <!-- Alerts will be added here dynamically -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Add this after the detection-panel div -->
+        <div class="authorities-panel">
+            <h2>Emergency Contact Authorities</h2>
+            <div class="contact-grid">
+                <div class="contact-card emergency">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h3>Emergency Police Control</h3>
+                        <p class="phone-number">100</p>
+                        <p class="availability">24/7 Available</p>
+                        <button onclick="contactAuthorities('police')" class="call-button">
+                            <i class="fas fa-phone"></i> Call Now
+                        </button>
+                    </div>
+                </div>
+
+                <div class="contact-card pollution">
+                    <div class="contact-icon">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h3>Pollution Control Board</h3>
+                        <p class="phone-number">080-25589112/113</p>
+                        <p class="availability">Office Hours: 9 AM - 6 PM</p>
+                        <button onclick="contactAuthorities('pollution')" class="call-button">
+                            <i class="fas fa-phone"></i> Call Now
+                        </button>
+                    </div>
+                </div>
+
+                <div class="contact-card municipal">
+                    <div class="contact-icon">
+                        <i class="fas fa-city"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h3>BBMP Control Room</h3>
+                        <p class="phone-number">080-22660000</p>
+                        <p class="availability">24/7 Available</p>
+                        <button onclick="contactAuthorities('municipal')" class="call-button">
+                            <i class="fas fa-phone"></i> Call Now
+                        </button>
+                    </div>
+                </div>
+
+                <div class="contact-card whatsapp">
+                    <div class="contact-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h3>WhatsApp Complaint</h3>
+                        <p class="phone-number">+91-9999999999</p>
+                        <p class="availability">Send Photos & Location</p>
+                        <button onclick="openWhatsApp()" class="call-button whatsapp-button">
+                            <i class="fab fa-whatsapp"></i> Send Message
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- After your contact section, add this new section -->
+        <section class="readings-section" id="readings">
+            <div class="container">
+                <h2 class="section-title">Real-Time Sensor Readings</h2>
+                <div class="readings-container">
+                    <!-- TDS Reading Box -->
+                    <div class="reading-box">
+                        <h3>TDS Level</h3>
+                        <div class="reading-value">
+                            <span id="tdsValue">0.0</span>
+                            <span class="unit">ppm</span>
+                        </div>
+                        <p class="reading-description">Total Dissolved Solids</p>
+                    </div>
+
+                    <!-- Turbidity Reading Box -->
+                    <div class="reading-box">
+                        <h3>Turbidity Level</h3>
+                        <div class="reading-value">
+                            <span id="turbidityValue">0.0</span>
+                            <span class="unit">NTU</span>
+                        </div>
+                        <p class="reading-description">Water Clarity Measurement</p>
+                    </div>
+
+                    <!-- Status Box -->
+                    <div class="reading-box">
+                        <h3>Water Quality Status</h3>
+                        <div class="status-value">
+                            <span id="status">Checking...</span>
+                        </div>
+                        <p id="lastUpdate" class="timestamp">Last Updated: --</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Status Section -->
+        <section id="status" class="status-section">
+            <div class="container">
+                <h2 class="section-title">Water Quality Status</h2>
+                <div class="status-container">
+                    <div class="status-box">
+                        <h3>Current Status</h3>
+                        <div class="status-display">
+                            <span id="status" class="status-text">Checking...</span>
+                        </div>
+                        <div class="status-details">
+                            <p id="lastUpdate">Last Updated: --</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Updated Navigation Menu -->
+        <nav class="navbar">
+            <div class="container">
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#dashboard">Dashboard</a></li>
+                    <li><a href="#geospatial">Geospatial</a></li>
+                    <li><a href="#readings">Sensor Readings</a></li>
+                    <li><a href="#status">Water Status</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <script src="script.js"></script>
+    <script>
+    function updateSensorData() {
+        fetch('latest_reading.json')
+            .then(response => response.json())
+            .then(data => {
+                // Update TDS and Turbidity values
+                document.getElementById('tdsValue').textContent = data.tds.toFixed(1);
+                document.getElementById('turbidityValue').textContent = data.turbidity.toFixed(1);
+                
+                // Update status if needed
+                document.getElementById('status').textContent = data.status;
+                
+                // Update timestamp
+                document.getElementById('lastUpdate').textContent = data.timestamp;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Update every second
+    setInterval(updateSensorData, 1000);
+
+    // Initial update
+    updateSensorData();
+    </script>
+</body>
+</html> 
