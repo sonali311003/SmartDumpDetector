@@ -20,4 +20,20 @@ It focuses on implementing data visualization and analysis techniques using libr
 ---
 
 ## 📂 Project Structure
+SmartDumpDetector/
+│
+├── data/                     # Dataset or collected images/videos
+├── models/                   # Trained ML or CNN models
+├── src/                      # Source code files (Python/C++ scripts)
+│   ├── detect.py             # Main detection logic
+│   ├── preprocess.py         # Image preprocessing functions
+│
+├── docs/                     # Report, documentation, and references
+│   └── DumpDetect_Report.pdf
+│
+├── demo.png                  # Image of project output
+├── demo.mp4                  # Video demonstration
+├── README.md                 # Project documentation
+└── requirements.txt           # List of dependencies (if Python project)
+
 
