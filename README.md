@@ -14,7 +14,7 @@ It focuses on implementing data visualization and analysis techniques using libr
 
 ## 🛠️ Technologies Used
 - Language: C++ / Python / etc.
-- Libraries: NumPy, Pandas, OpenCV (if applicable)
+- Libraries: NumPy, Pandas, OpenCV
 - Tools: Git, VS Code, etc.
 
 ---
